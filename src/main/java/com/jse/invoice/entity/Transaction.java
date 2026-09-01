@@ -102,4 +102,19 @@ public class Transaction {
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction [id=" + id + ", dateReceived=" + dateReceived + ", transactionDate=" + transactionDate
+                + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd=" + billingPeriodEnd
+                + ", netTransactionAmount=" + netTransactionAmount + ", gstAmount=" + gstAmount + ", invoice=" + invoice
+                + ", getId()=" + getId() + ", getDateReceived()=" + getDateReceived() + ", getClass()=" + getClass()
+                + ", getTransactionDate()=" + getTransactionDate() + ", getBillingPeriodStart()="
+                + getBillingPeriodStart() + ", getBillingPeriodEnd()=" + getBillingPeriodEnd()
+                + ", getNetTransactionAmount()=" + getNetTransactionAmount() + ", getGstAmount()=" + getGstAmount()
+                + ", getInvoice()=" + getInvoice() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+                + "]";
+    }
+
+    
 }

@@ -68,13 +68,25 @@ public class InvoiceService {
     @Transactional
     public Invoice saveInvoice(InvoiceDto invoiceDto) {
         // creating the invoice
-
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDto.invoiceNumber());
         invoice.setGrossAmount(invoiceDto.gstAmount().add(invoiceDto.netAmount()));
         invoice.setNetAmount(invoiceDto.netAmount());
         invoice.setGstAmount(invoiceDto.gstAmount());
         invoice.setTotalNoTransactions(invoiceDto.totalNoTransactions());
+
+        invoiceDto.transactionDtoList().forEach(
+            transactionDto -> {
+                Transaction transaction = new Transaction();
+                transaction.setDateReceived(transactionDto.dateReceived());
+                transaction.setTransactionDate(transactionDto.transactionDate());
+                transaction.setBillingPeriodStart(transactionDto.billingPeriodStart());
+                transaction.setBillingPeriodEnd(transactionDto.billingPeriodEnd());
+                transaction.setNetTransactionAmount(transactionDto.netTransactionAmount());
+                transaction.setGstAmount(transactionDto.gstAmount());
+                transaction.setInvoice(invoice);
+            }
+        );
 
         return invoiceRepository.save(invoice);
     }

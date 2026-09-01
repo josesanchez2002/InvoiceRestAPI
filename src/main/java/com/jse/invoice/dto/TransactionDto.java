@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 
 public record TransactionDto(
         @NotNull(message = "Date Received is required")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime dateReceived,
 
         @NotNull(message = "Transaction Date is required")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime transactionDate,
         
         @NotNull(message = "Invoice Number is required")
         String invoiceNumber,
 
         @NotNull(message = "Start Billing Period is required")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime billingPeriodStart,
 
         @NotNull(message = "End Billing Period is required")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime billingPeriodEnd,
 
         @NotNull(message = "Net transaction amount is required")

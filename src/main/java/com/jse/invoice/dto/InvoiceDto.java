@@ -26,11 +26,11 @@ public record InvoiceDto(
         @DecimalMin(value = "0.01", message = "Net amount is required")
         BigDecimal netAmount,
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime receiptDate,
 
         @NotNull(message = "Payment due date is required")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
         LocalDateTime paymentDueDate,
 
         @NotNull(message = "Total number of transactions is required")
