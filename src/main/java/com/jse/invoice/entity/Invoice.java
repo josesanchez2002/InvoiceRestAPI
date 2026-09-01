@@ -4,23 +4,46 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "invoices")
 public class Invoice {
     @Id
+    @Column(name = "invoice_id")
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "invoice_id_seq")
-    @SequenceGenerator(name = "invoice_id_seq", sequenceName = "invoice_id_seq", initialValue = 32000, allocationSize = 1)
+    @SequenceGenerator(
+        name = "invoice_id_seq", 
+        sequenceName = "invoice_id_seq", 
+        initialValue = 32000, allocationSize = 1)
     private long id;
+    
+    @Column(name = "invoice_number")
     private String invoiceNumber;
+    
+    @Column(name = "gross_amount")
     private BigDecimal grossAmount;
+    
+    @Column(name = "gst_amount")
     private BigDecimal gstAmount;
+    
+    @Column(name = "net_amount")
     private BigDecimal netAmount;
+    
+    @Column(name = "receipt_date")
     private LocalDateTime receiptDate;
+    
+    @Column(name = "payment_due_date")
     private LocalDateTime paymentDueDate;
+
+    @Column(name = "total_no_trxn")
     private long  totalNoTransactions;
+
+    // mappedBy points to the variable name in the Employee class
+    // orphanRemoval ensures children are deleted if removed from this list
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -84,5 +107,24 @@ public class Invoice {
 
     public void setTotalNoTransactions(long totalNoTransactions) {
         this.totalNoTransactions = totalNoTransactions;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    // Helper methods to keep both sides of the relationship synchronized
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+        transaction.setInvoice(this);
+    }
+
+    public void removeTransaction(Transaction transaction) {
+        transactions.remove(transaction);
+        transaction.setInvoice(null);
     }
 }

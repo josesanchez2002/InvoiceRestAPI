@@ -10,32 +10,34 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "transaction_id_seq")
-    @SequenceGenerator(name = "transaction_id_seq", sequenceName = "transaction_id_seq", initialValue = 73000, allocationSize = 1)
+    @SequenceGenerator(
+        name = "transaction_id_seq", 
+        sequenceName = "transaction_id_seq", 
+        initialValue = 73000, allocationSize = 1)
+    @Column(name = "trxn_id")
     private long id;
+
+    @Column(name = "date_received")
     private LocalDateTime dateReceived;
+
+    @Column(name = "transaction_date")
     private LocalDateTime transactionDate;
+    
+    @Column(name = "billing_period_start")
     private LocalDateTime billingPeriodStart;
+
+    @Column(name = "billing_period_end")
     private LocalDateTime billingPeriodEnd;
+
+    @Column(name = "net_transaction_amount")
     private BigDecimal netTransactionAmount;
+
+    @Column(name = "gst_amount")
     private BigDecimal gstAmount;
-    private String invoiceNumber;
-    private Long invoiceId;
 
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "invoice_id", nullable = false) // Foreign key column
+    private Invoice invoice;
 
     public long getId() {
         return id;
@@ -91,5 +93,13 @@ public class Transaction {
 
     public void setGstAmount(BigDecimal gstAmount) {
         this.gstAmount = gstAmount;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
