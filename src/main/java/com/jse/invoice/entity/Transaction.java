@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -37,6 +39,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id", nullable = false) // Foreign key column
+    @JsonBackReference
     private Invoice invoice;
 
     public long getId() {
@@ -102,19 +105,4 @@ public class Transaction {
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
-
-    @Override
-    public String toString() {
-        return "Transaction [id=" + id + ", dateReceived=" + dateReceived + ", transactionDate=" + transactionDate
-                + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd=" + billingPeriodEnd
-                + ", netTransactionAmount=" + netTransactionAmount + ", gstAmount=" + gstAmount + ", invoice=" + invoice
-                + ", getId()=" + getId() + ", getDateReceived()=" + getDateReceived() + ", getClass()=" + getClass()
-                + ", getTransactionDate()=" + getTransactionDate() + ", getBillingPeriodStart()="
-                + getBillingPeriodStart() + ", getBillingPeriodEnd()=" + getBillingPeriodEnd()
-                + ", getNetTransactionAmount()=" + getNetTransactionAmount() + ", getGstAmount()=" + getGstAmount()
-                + ", getInvoice()=" + getInvoice() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-                + "]";
-    }
-
-    
 }

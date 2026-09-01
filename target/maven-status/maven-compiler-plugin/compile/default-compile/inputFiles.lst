@@ -7,3 +7,4 @@
 /Users/jsanchez/Documents/invoice/src/main/java/com/jse/invoice/repository/InvoiceRepository.java
 /Users/jsanchez/Documents/invoice/src/main/java/com/jse/invoice/repository/TransactionRepository.java
 /Users/jsanchez/Documents/invoice/src/main/java/com/jse/invoice/service/InvoiceService.java
+/Users/jsanchez/Documents/invoice/src/main/java/com/jse/invoice/utils/InvoiceValidator.java

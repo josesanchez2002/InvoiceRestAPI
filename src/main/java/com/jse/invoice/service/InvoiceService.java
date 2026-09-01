@@ -4,21 +4,21 @@ import com.jse.invoice.dto.InvoiceDto;
 import com.jse.invoice.entity.Invoice;
 import com.jse.invoice.entity.Transaction;
 import com.jse.invoice.repository.InvoiceRepository;
-import com.jse.invoice.repository.TransactionRepository;
+import com.jse.invoice.utils.InvoiceValidator;
+
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
-    private final TransactionRepository transactionRepository;
+    private final InvoiceValidator invoiceValidator;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, TransactionRepository transactionRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceValidator invoiceValidator) {
         this.invoiceRepository = invoiceRepository;
-        this.transactionRepository = transactionRepository;
+        this.invoiceValidator = invoiceValidator;
     }
 
     public List<Invoice> getAllInvoices() {
@@ -32,41 +32,19 @@ public class InvoiceService {
     public String getInvoiceStatus(long id) {
         Invoice invoice = getInvoice(id);
 
-        if (invoice != null) {
-            List<Transaction> transactionList = transactionRepository.findTransactionsByInvoiceId(invoice.getId());
-
-            if (transactionList != null && !transactionList.isEmpty()) {
-                if (transactionList.size() != invoice.getTotalNoTransactions()) {
-                    return "Invalid - Number of transactions in the invoice does not match the total number of transactions recorded against this invoice";
-                }
-
-                BigDecimal totalNetTransactionAmt = transactionList.stream()
-                        .map(Transaction::getNetTransactionAmount) // Extract BigDecimal
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-                BigDecimal totalGSTTransactionAmt = transactionList.stream()
-                        .map(Transaction::getGstAmount) // Extract BigDecimal
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-                if (invoice.getNetAmount().compareTo(totalNetTransactionAmt) != 0) {
-                    System.out.println(invoice.getNetAmount());
-
-                    System.out.println(totalNetTransactionAmt);
-                    return "Invalid - Net amount do not match";
-                }
-
-                if (invoice.getGstAmount().compareTo(totalGSTTransactionAmt) != 0) {
-                    return "Invalid - GST amount do not match";
-                }
-            }
+        if (invoice != null){
+            return "Valid: " + invoice.isValid() + " - Reason: " + invoice.getReason();
 
         }
 
-        return "Valid";
+        return null;
     }
 
     @Transactional
     public Invoice saveInvoice(InvoiceDto invoiceDto) {
+
+        String invalidReason = invoiceValidator.verifyInvoice(invoiceDto);
+        
         // creating the invoice
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDto.invoiceNumber());
@@ -85,8 +63,17 @@ public class InvoiceService {
                 transaction.setNetTransactionAmount(transactionDto.netTransactionAmount());
                 transaction.setGstAmount(transactionDto.gstAmount());
                 transaction.setInvoice(invoice);
+
+                invoice.getTransactions().add(transaction);
             }
         );
+
+        if (invalidReason != null){
+            invoice.setValid(false);
+            invoice.setReason(invalidReason);
+        } else {
+            invoice.setValid(true);
+        }
 
         return invoiceRepository.save(invoice);
     }

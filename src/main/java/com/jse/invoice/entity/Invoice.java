@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "invoices")
 public class Invoice {
@@ -46,6 +48,12 @@ public class Invoice {
     @Column(name = "reason")
     private String reason;
 
+    // mappedBy points to the variable name in the Employee class
+    // orphanRemoval ensures children are deleted if removed from this list
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Transaction> transactions = new ArrayList<>();
+
     public boolean isValid() {
         return isValid;
     }
@@ -61,11 +69,6 @@ public class Invoice {
     public void setReason(String reason) {
         this.reason = reason;
     }
-
-    // mappedBy points to the variable name in the Employee class
-    // orphanRemoval ensures children are deleted if removed from this list
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -148,18 +151,5 @@ public class Invoice {
     public void removeTransaction(Transaction transaction) {
         transactions.remove(transaction);
         transaction.setInvoice(null);
-    }
-
-    @Override
-    public String toString() {
-        return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber + ", grossAmount=" + grossAmount
-                + ", gstAmount=" + gstAmount + ", netAmount=" + netAmount + ", receiptDate=" + receiptDate
-                + ", paymentDueDate=" + paymentDueDate + ", totalNoTransactions=" + totalNoTransactions
-                + ", transactions=" + transactions + ", getId()=" + getId() + ", getClass()=" + getClass()
-                + ", getInvoiceNumber()=" + getInvoiceNumber() + ", getGrossAmount()=" + getGrossAmount()
-                + ", getGstAmount()=" + getGstAmount() + ", getNetAmount()=" + getNetAmount() + ", getReceiptDate()="
-                + getReceiptDate() + ", getPaymentDueDate()=" + getPaymentDueDate() + ", getTotalNoTransactions()="
-                + getTotalNoTransactions() + ", getTransactions()=" + getTransactions() + ", hashCode()=" + hashCode()
-                + ", toString()=" + super.toString() + "]";
     }
 }

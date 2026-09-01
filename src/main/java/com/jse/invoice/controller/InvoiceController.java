@@ -19,8 +19,8 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Invoice>> getAllInvoices() {
-        return ResponseEntity.ok(invoiceService.getAllInvoices());
+    public List<Invoice> getAllInvoices() {
+        return invoiceService.getAllInvoices();
     }
 
     @GetMapping("/{id}")
