@@ -2,24 +2,39 @@ package com.jse.invoice.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 
 public record TransactionDto(
+        @NotNull(message = "Date Received is required")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
         LocalDateTime dateReceived,
+
+        @NotNull(message = "Transaction Date is required")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
         LocalDateTime transactionDate,
+        
+        @NotNull(message = "Invoice Number is required")
         String invoiceNumber,
 
+        @NotNull(message = "Start Billing Period is required")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
         LocalDateTime billingPeriodStart,
 
+        @NotNull(message = "End Billing Period is required")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
         LocalDateTime billingPeriodEnd,
 
+        @NotNull(message = "Net transaction amount is required")
+        @DecimalMin(value = "0.01", message = "Net transaction amount is required")
         BigDecimal netTransactionAmount,
+        
+        @NotNull(message = "GST transaction amount is required")
+        @DecimalMin(value = "0.01", message = "GST transaction amount is required")
         BigDecimal gstAmount
 ) {
 }

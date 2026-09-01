@@ -40,6 +40,28 @@ public class Invoice {
     @Column(name = "total_no_trxn")
     private long  totalNoTransactions;
 
+    @Column(name = "is_valid")
+    private boolean isValid;
+
+    @Column(name = "reason")
+    private String reason;
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     // mappedBy points to the variable name in the Employee class
     // orphanRemoval ensures children are deleted if removed from this list
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -126,5 +148,18 @@ public class Invoice {
     public void removeTransaction(Transaction transaction) {
         transactions.remove(transaction);
         transaction.setInvoice(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber + ", grossAmount=" + grossAmount
+                + ", gstAmount=" + gstAmount + ", netAmount=" + netAmount + ", receiptDate=" + receiptDate
+                + ", paymentDueDate=" + paymentDueDate + ", totalNoTransactions=" + totalNoTransactions
+                + ", transactions=" + transactions + ", getId()=" + getId() + ", getClass()=" + getClass()
+                + ", getInvoiceNumber()=" + getInvoiceNumber() + ", getGrossAmount()=" + getGrossAmount()
+                + ", getGstAmount()=" + getGstAmount() + ", getNetAmount()=" + getNetAmount() + ", getReceiptDate()="
+                + getReceiptDate() + ", getPaymentDueDate()=" + getPaymentDueDate() + ", getTotalNoTransactions()="
+                + getTotalNoTransactions() + ", getTransactions()=" + getTransactions() + ", hashCode()=" + hashCode()
+                + ", toString()=" + super.toString() + "]";
     }
 }
