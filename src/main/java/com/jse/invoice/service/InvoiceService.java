@@ -2,23 +2,28 @@ package com.jse.invoice.service;
 
 import com.jse.invoice.dto.InvoiceDto;
 import com.jse.invoice.entity.Invoice;
-import com.jse.invoice.entity.Transaction;
+
 import com.jse.invoice.repository.InvoiceRepository;
-import com.jse.invoice.utils.InvoiceValidator;
+import com.jse.invoice.utils.InvoiceGenerator;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class InvoiceService {
-    private final InvoiceRepository invoiceRepository;
-    private final InvoiceValidator invoiceValidator;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceValidator invoiceValidator) {
+    @Autowired
+    private final InvoiceRepository invoiceRepository;
+    
+    @Autowired
+    private final InvoiceGenerator invoiceGenerator;
+    
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceGenerator invoiceGenerator) {
         this.invoiceRepository = invoiceRepository;
-        this.invoiceValidator = invoiceValidator;
+        this.invoiceGenerator = invoiceGenerator;
     }
 
     public List<Invoice> getAllInvoices() {
@@ -41,36 +46,7 @@ public class InvoiceService {
 
     @Transactional
     public Invoice saveInvoice(InvoiceDto invoiceDto) {
-        String invalidReason = invoiceValidator.verifyInvoice(invoiceDto);
-        
-        Invoice invoice = new Invoice();
-        invoice.setInvoiceNumber(invoiceDto.invoiceNumber());
-        invoice.setGrossAmount(invoiceDto.gstAmount().add(invoiceDto.netAmount()));
-        invoice.setNetAmount(invoiceDto.netAmount());
-        invoice.setGstAmount(invoiceDto.gstAmount());
-        invoice.setTotalNoTransactions(invoiceDto.totalNoTransactions());
-
-        invoiceDto.transactionDtoList().forEach(
-            transactionDto -> {
-                Transaction transaction = new Transaction();
-                transaction.setDateReceived(transactionDto.dateReceived());
-                transaction.setTransactionDate(transactionDto.transactionDate());
-                transaction.setBillingPeriodStart(transactionDto.billingPeriodStart());
-                transaction.setBillingPeriodEnd(transactionDto.billingPeriodEnd());
-                transaction.setNetTransactionAmount(transactionDto.netTransactionAmount());
-                transaction.setGstAmount(transactionDto.gstAmount());
-                transaction.setInvoice(invoice);
-
-                invoice.getTransactions().add(transaction);
-            }
-        );
-
-        if (invalidReason != null){
-            invoice.setValid(false);
-            invoice.setReason(invalidReason);
-        } else {
-            invoice.setValid(true);
-        }
+        Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 
         return invoiceRepository.save(invoice);
     }
