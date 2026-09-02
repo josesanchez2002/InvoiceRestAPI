@@ -152,4 +152,14 @@ public class Invoice {
         transactions.remove(transaction);
         transaction.setInvoice(null);
     }
+
+    @Override
+    public String toString() {
+        return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber + ", grossAmount=" + grossAmount
+                + ", gstAmount=" + gstAmount + ", netAmount=" + netAmount + ", receiptDate=" + receiptDate
+                + ", paymentDueDate=" + paymentDueDate + ", totalNoTransactions=" + totalNoTransactions + ", isValid="
+                + isValid + ", reason=" + reason + ", transactions=" + transactions + "]";
+    }
+
+    
 }

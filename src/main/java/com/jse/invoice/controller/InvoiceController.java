@@ -36,11 +36,7 @@ public class InvoiceController {
     @PostMapping
     public ResponseEntity<String> createInvoice(@RequestBody InvoiceDto invoiceDto) {
         Invoice invoice = invoiceService.saveInvoice(invoiceDto);
-
-        // Handle your business logic here (e.g., saving to a database)
         String message = "Invoice " + invoiceDto.invoiceNumber() + " created successfully - " + invoice.toString() ;
-
-        // Return 201 Created status code along with a response message
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 }

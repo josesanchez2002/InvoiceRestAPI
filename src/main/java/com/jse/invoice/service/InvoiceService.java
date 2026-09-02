@@ -34,7 +34,6 @@ public class InvoiceService {
 
         if (invoice != null){
             return "Valid: " + invoice.isValid() + " - Reason: " + invoice.getReason();
-
         }
 
         return null;
@@ -42,10 +41,8 @@ public class InvoiceService {
 
     @Transactional
     public Invoice saveInvoice(InvoiceDto invoiceDto) {
-
         String invalidReason = invoiceValidator.verifyInvoice(invoiceDto);
         
-        // creating the invoice
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDto.invoiceNumber());
         invoice.setGrossAmount(invoiceDto.gstAmount().add(invoiceDto.netAmount()));

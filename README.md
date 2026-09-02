@@ -110,4 +110,31 @@ I made the assumption that this data (invoices and transactions) had to be loade
 # Notes
 Overall, I had fun working in this little project and even if I didnt complete all the tasks, it gave me a good sense of what I have to improve and have a second thought on how would I would work on it.
 
+```
+curl -X POST "localhost:8080/invoice" \
+  -H "Content-Type: application/json" \
+  -d '{
+	"invoiceNumber": "588008550",
+	"grossAmount": 40.56,
+	"gstAmount": 3.69,
+	"netAmount": 36.87,
+	"receiptDate": "2007-12-12 18:30:52.000",
+	"paymentDueDate":"2006-04-28 00:00:00.000",
+	"totalNoTransactions":"4",
+	"transactionDtoList":[
+		{
+			"dateReceived" : "2007-12-12 00:00:00.000",
+			"transactionDate" : "2006-03-17 00:00:00.000",
+			"invoiceNumber" : "588008550",
+			"billingPeriodStart":"2005-12-14 00:00:00.000",
+			"billingPeriodEnd":"2005-12-31 00:00:00.000",
+			"netTransactionAmount":1.07,
+			"gstAmount":0.11
+		}
+	]
+}'
+
+curl  "localhost:8080/invoice"
+```
+
 

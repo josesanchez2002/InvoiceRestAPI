@@ -105,4 +105,11 @@ public class Transaction {
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction [id=" + id + ", dateReceived=" + dateReceived + ", transactionDate=" + transactionDate
+                + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd=" + billingPeriodEnd
+                + ", netTransactionAmount=" + netTransactionAmount + ", gstAmount=" + gstAmount + "]";
+    }
 }
