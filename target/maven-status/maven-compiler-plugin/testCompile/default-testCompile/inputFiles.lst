@@ -1,2 +1,4 @@
 /Users/jsanchez/Documents/invoice/src/test/java/com/jse/invoice/InvoiceApplicationTests.java
 /Users/jsanchez/Documents/invoice/src/test/java/com/jse/invoice/controller/InvoiceControllerTest.java
+/Users/jsanchez/Documents/invoice/src/test/java/com/jse/invoice/service/InvoiceServiceTest.java
+/Users/jsanchez/Documents/invoice/src/test/java/com/jse/invoice/utils/InvoiceValidatorTest.java

@@ -1,6 +1,5 @@
 package com.jse.invoice.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jse.invoice.dto.InvoiceDto;
@@ -10,7 +9,6 @@ import com.jse.invoice.entity.Transaction;
 @Component
 public class InvoiceGenerator {
 
-    @Autowired
     private final InvoiceValidator invoiceValidator;
 
     public InvoiceGenerator(InvoiceValidator invoiceValidator) {
@@ -18,7 +16,7 @@ public class InvoiceGenerator {
     }
 
     public Invoice generateInvoice(InvoiceDto invoiceDto){
-        String invalidReason = invoiceValidator.verifyInvoice(invoiceDto);
+        String invalidReason = invoiceValidator.verifyInvoice(invoiceDto).orElse(null);
         
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDto.invoiceNumber());

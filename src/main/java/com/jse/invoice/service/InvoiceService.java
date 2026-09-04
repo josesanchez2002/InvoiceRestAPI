@@ -7,7 +7,6 @@ import com.jse.invoice.repository.InvoiceRepository;
 import com.jse.invoice.utils.InvoiceGenerator;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +14,8 @@ import java.util.List;
 @Service
 public class InvoiceService {
 
-    @Autowired
     private final InvoiceRepository invoiceRepository;
-    
-    @Autowired
+
     private final InvoiceGenerator invoiceGenerator;
     
     public InvoiceService(InvoiceRepository invoiceRepository, InvoiceGenerator invoiceGenerator) {

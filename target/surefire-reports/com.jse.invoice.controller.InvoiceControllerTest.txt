@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.jse.invoice.controller.InvoiceControllerTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.473 s -- in com.jse.invoice.controller.InvoiceControllerTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.378 s -- in com.jse.invoice.controller.InvoiceControllerTest
