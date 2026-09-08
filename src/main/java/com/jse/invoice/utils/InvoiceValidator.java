@@ -14,7 +14,7 @@ public class InvoiceValidator {
         StringBuilder reasons = new StringBuilder();
 
         if (invoiceDto.totalNoTransactions() != invoiceDto.transactionDtoList().size()){
-            reasons.append("List of transactions does not match the number of transactions in the invopice");
+            reasons.append("- List of transactions does not match the number of transactions in the invoice");
         }
 
         // Checking the Net ammount
@@ -23,7 +23,7 @@ public class InvoiceValidator {
                               .reduce(BigDecimal.ZERO, BigDecimal::add);
         
         if (invoiceDto.netAmount().compareTo(netSum) != 0) {
-            reasons.append("Net ammount does not match");
+            reasons.append("- Net ammount does not match");
         }
 
         // Checking the GST ammount
@@ -32,11 +32,11 @@ public class InvoiceValidator {
                               .reduce(BigDecimal.ZERO, BigDecimal::add);
         
         if (invoiceDto.gstAmount().compareTo(gstSum) != 0) {
-            reasons.append("GST ammount does not match");
+            reasons.append("- GST ammount does not match");
         }
 
         if (invoiceDto.gstAmount().add(invoiceDto.netAmount()).compareTo(invoiceDto.grossAmount()) != 0) {
-            reasons.append("Invoice Gross ammount does not match");
+            reasons.append("- Invoice Gross ammount does not match");
         }
 
         if (reasons.isEmpty()){
