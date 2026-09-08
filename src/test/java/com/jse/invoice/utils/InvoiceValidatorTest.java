@@ -1,8 +1,7 @@
 package com.jse.invoice.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +12,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jse.invoice.dto.InvoiceDto;
@@ -21,11 +21,15 @@ import com.jse.invoice.dto.TransactionDto;
 @ExtendWith(MockitoExtension.class)
 public class InvoiceValidatorTest {
 
+    @Mock 
+    private InvoiceValidatorConditions invoiceValidatorConditions;
+
     @InjectMocks
     private InvoiceValidator invoiceValidator;
 
     @Test
     void shouldVerifyNoOfTransactions() {
+
         TransactionDto transactionDto = new TransactionDto(LocalDateTime.now(), 
         LocalDateTime.now(), 
         "00001", LocalDateTime.now(), LocalDateTime.now(), new BigDecimal(10), new BigDecimal(10));
@@ -43,11 +47,10 @@ public class InvoiceValidatorTest {
             Long.valueOf(4), 
             transactionDtoList);
 
+        when(invoiceValidatorConditions.verifyInvoiceTransactionListSize(invoiceDto)).thenReturn(true);
 
         Optional<String> validationResult = invoiceValidator.verifyInvoice(invoiceDto);
 
         assertEquals("List of transactions does not match the number of transactions in the invoice", validationResult.get());
-
-
     }
 }
