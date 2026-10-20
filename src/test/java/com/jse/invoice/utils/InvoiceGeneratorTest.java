@@ -89,14 +89,14 @@ public class InvoiceGeneratorTest {
             Long.valueOf(0),
             new ArrayList<>());
 
-        when(invoiceValidator.verifyInvoice(invoiceDto)).thenReturn(Optional.of("Net ammount does not match"));
+        when(invoiceValidator.verifyInvoice(invoiceDto)).thenReturn(Optional.of("Net amount does not match"));
 
         Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 
         verify(invoiceValidator, times(1)).verifyInvoice(invoiceDto);
 
         assertThat(invoice.isValid(), is(false));
-        assertThat(invoice.getReason(), is("Net ammount does not match"));
+        assertThat(invoice.getReason(), is("Net amount does not match"));
     }
 
     @Test
@@ -191,7 +191,7 @@ public class InvoiceGeneratorTest {
             Long.valueOf(0),
             new ArrayList<>());
 
-        when(invoiceValidator.verifyInvoice(invoiceDto)).thenReturn(Optional.of("Invoice Gross ammount does not match"));
+        when(invoiceValidator.verifyInvoice(invoiceDto)).thenReturn(Optional.of("Invoice Gross amount does not match"));
 
         Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 

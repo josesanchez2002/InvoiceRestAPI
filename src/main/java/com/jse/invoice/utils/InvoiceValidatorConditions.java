@@ -15,7 +15,7 @@ public class InvoiceValidatorConditions {
     }
 
     public boolean verifyInvoiceNetAmount(InvoiceDto invoiceDto) {
-        // Checking the Net ammount
+        // Checking the Net amount
         BigDecimal netSum = invoiceDto.transactionDtoList().stream()
                               .map(TransactionDto::netTransactionAmount)
                               .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -24,7 +24,7 @@ public class InvoiceValidatorConditions {
     }
 
     public boolean verifyInvoiceGstAmount(InvoiceDto invoiceDto) {
-        // Checking the GST ammount
+        // Checking the GST amount
         BigDecimal gstSum = invoiceDto.transactionDtoList().stream()
                               .map(TransactionDto::gstAmount)
                               .reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -24,15 +24,15 @@ public class InvoiceValidator {
         }
 
         if (invoiceValidatorConditions.verifyInvoiceNetAmount(invoiceDto)){
-            reasons.add("Net ammount does not match");
+            reasons.add("Net amount does not match");
         }
 
         if (invoiceValidatorConditions.verifyInvoiceGstAmount(invoiceDto)){
-            reasons.add("GST ammount does not match");
+            reasons.add("GST amount does not match");
         }
 
         if (invoiceValidatorConditions.verifyTotalAmountInvoice(invoiceDto)){
-            reasons.add("Invoice Gross ammount does not match");
+            reasons.add("Invoice Gross amount does not match");
         }
 
         if (reasons.length() == 0){

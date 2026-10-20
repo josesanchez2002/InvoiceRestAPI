@@ -76,7 +76,7 @@ public class InvoiceValidatorTest {
 
         Optional<String> validationResult = invoiceValidator.verifyInvoice(invoiceDto);
 
-        assertThat(validationResult, is(Optional.of("Net ammount does not match")));
+        assertThat(validationResult, is(Optional.of("Net amount does not match")));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class InvoiceValidatorTest {
 
         Optional<String> validationResult = invoiceValidator.verifyInvoice(invoiceDto);
 
-        assertThat(validationResult, is(Optional.of("GST ammount does not match")));
+        assertThat(validationResult, is(Optional.of("GST amount does not match")));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class InvoiceValidatorTest {
 
         Optional<String> validationResult = invoiceValidator.verifyInvoice(invoiceDto);
 
-        assertThat(validationResult, is(Optional.of("Invoice Gross ammount does not match")));
+        assertThat(validationResult, is(Optional.of("Invoice Gross amount does not match")));
     }
 
     @Test
@@ -104,6 +104,6 @@ public class InvoiceValidatorTest {
 
         Optional<String> validationResult = invoiceValidator.verifyInvoice(invoiceDto);
 
-        assertThat(validationResult, is(Optional.of("Net amount does not match; GST ammount does not match")));
+        assertThat(validationResult, is(Optional.of("Net amount does not match; GST amount does not match")));
     }
 }
