@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.jse.invoice.exception.InvalidTransactionException;
 
 @Entity
 @Table(name = "invoices")
@@ -144,13 +145,22 @@ public class Invoice {
 
     // Helper methods to keep both sides of the relationship synchronized
     public void addTransaction(Transaction transaction) {
+        if (transaction == null) {
+            throw new InvalidTransactionException("Transaction cannot be null");
+        }
+
         transactions.add(transaction);
         transaction.setInvoice(this);
     }
 
     public void removeTransaction(Transaction transaction) {
-        transactions.remove(transaction);
-        transaction.setInvoice(null);
+        if (transaction == null) {
+            throw new InvalidTransactionException("Transaction cannot be null");
+        }
+
+        if (transactions.remove(transaction)) {
+            transaction.setInvoice(null);
+        }
     }
 
     @Override

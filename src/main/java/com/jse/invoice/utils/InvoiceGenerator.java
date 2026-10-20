@@ -34,9 +34,8 @@ public class InvoiceGenerator {
                 transaction.setBillingPeriodEnd(transactionDto.billingPeriodEnd());
                 transaction.setNetTransactionAmount(transactionDto.netTransactionAmount());
                 transaction.setGstAmount(transactionDto.gstAmount());
-                transaction.setInvoice(invoice);
 
-                invoice.getTransactions().add(transaction);
+                invoice.addTransaction(transaction);
             }
         );
 
