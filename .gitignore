@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### macOS ###
+.DS_Store
+
+### Claude Code ###
+# local permissions only; keep .claude/skills/ and CLAUDE.md in git so they're shared
+.claude/settings.local.json
+
+### Logs / local data ###
+*.log
+logs/
+*.mv.db
+*.trace.db
+
+### Local env / secrets ###
+.env
+application-local.properties
