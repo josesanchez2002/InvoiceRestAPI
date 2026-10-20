@@ -1,11 +1,13 @@
 package com.jse.invoice.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,13 +68,13 @@ public class InvoiceGeneratorTest {
 
         verify(invoiceValidator, times(1)).verifyInvoice(invoiceDto);
 
-        assertTrue(invoice.isValid());
-        assertNull(invoice.getReason());
-        assertEquals("00001", invoice.getInvoiceNumber());
-        assertEquals(new BigDecimal("100.00"), invoice.getNetAmount());
-        assertEquals(new BigDecimal("10.00"), invoice.getGstAmount());
-        assertEquals(0, new BigDecimal("110.00").compareTo(invoice.getGrossAmount()));
-        assertEquals(1L, invoice.getTotalNoTransactions());
+        assertThat(invoice.isValid(), is(true));
+        assertThat(invoice.getReason(), is(nullValue()));
+        assertThat(invoice.getInvoiceNumber(), is("00001"));
+        assertThat(invoice.getNetAmount(), comparesEqualTo(new BigDecimal("100.00")));
+        assertThat(invoice.getGstAmount(), comparesEqualTo(new BigDecimal("10.00")));
+        assertThat(invoice.getGrossAmount(), comparesEqualTo(new BigDecimal("110.00")));
+        assertThat(invoice.getTotalNoTransactions(), is(1L));
     }
 
     @Test
@@ -93,8 +95,8 @@ public class InvoiceGeneratorTest {
 
         verify(invoiceValidator, times(1)).verifyInvoice(invoiceDto);
 
-        assertFalse(invoice.isValid());
-        assertEquals("Net ammount does not match", invoice.getReason());
+        assertThat(invoice.isValid(), is(false));
+        assertThat(invoice.getReason(), is("Net ammount does not match"));
     }
 
     @Test
@@ -135,25 +137,25 @@ public class InvoiceGeneratorTest {
 
         Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 
-        assertEquals(2, invoice.getTransactions().size());
+        assertThat(invoice.getTransactions(), hasSize(2));
 
         Transaction firstTransaction = invoice.getTransactions().get(0);
-        assertEquals(firstTransactionDto.dateReceived(), firstTransaction.getDateReceived());
-        assertEquals(firstTransactionDto.transactionDate(), firstTransaction.getTransactionDate());
-        assertEquals(firstTransactionDto.billingPeriodStart(), firstTransaction.getBillingPeriodStart());
-        assertEquals(firstTransactionDto.billingPeriodEnd(), firstTransaction.getBillingPeriodEnd());
-        assertEquals(firstTransactionDto.netTransactionAmount(), firstTransaction.getNetTransactionAmount());
-        assertEquals(firstTransactionDto.gstAmount(), firstTransaction.getGstAmount());
-        assertSame(invoice, firstTransaction.getInvoice());
+        assertThat(firstTransaction.getDateReceived(), is(firstTransactionDto.dateReceived()));
+        assertThat(firstTransaction.getTransactionDate(), is(firstTransactionDto.transactionDate()));
+        assertThat(firstTransaction.getBillingPeriodStart(), is(firstTransactionDto.billingPeriodStart()));
+        assertThat(firstTransaction.getBillingPeriodEnd(), is(firstTransactionDto.billingPeriodEnd()));
+        assertThat(firstTransaction.getNetTransactionAmount(), comparesEqualTo(firstTransactionDto.netTransactionAmount()));
+        assertThat(firstTransaction.getGstAmount(), comparesEqualTo(firstTransactionDto.gstAmount()));
+        assertThat(firstTransaction.getInvoice(), is(sameInstance(invoice)));
 
         Transaction secondTransaction = invoice.getTransactions().get(1);
-        assertEquals(secondTransactionDto.dateReceived(), secondTransaction.getDateReceived());
-        assertEquals(secondTransactionDto.transactionDate(), secondTransaction.getTransactionDate());
-        assertEquals(secondTransactionDto.billingPeriodStart(), secondTransaction.getBillingPeriodStart());
-        assertEquals(secondTransactionDto.billingPeriodEnd(), secondTransaction.getBillingPeriodEnd());
-        assertEquals(secondTransactionDto.netTransactionAmount(), secondTransaction.getNetTransactionAmount());
-        assertEquals(secondTransactionDto.gstAmount(), secondTransaction.getGstAmount());
-        assertSame(invoice, secondTransaction.getInvoice());
+        assertThat(secondTransaction.getDateReceived(), is(secondTransactionDto.dateReceived()));
+        assertThat(secondTransaction.getTransactionDate(), is(secondTransactionDto.transactionDate()));
+        assertThat(secondTransaction.getBillingPeriodStart(), is(secondTransactionDto.billingPeriodStart()));
+        assertThat(secondTransaction.getBillingPeriodEnd(), is(secondTransactionDto.billingPeriodEnd()));
+        assertThat(secondTransaction.getNetTransactionAmount(), comparesEqualTo(secondTransactionDto.netTransactionAmount()));
+        assertThat(secondTransaction.getGstAmount(), comparesEqualTo(secondTransactionDto.gstAmount()));
+        assertThat(secondTransaction.getInvoice(), is(sameInstance(invoice)));
     }
 
     @Test
@@ -172,9 +174,9 @@ public class InvoiceGeneratorTest {
 
         Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 
-        assertNotNull(invoice);
-        assertEquals("00004", invoice.getInvoiceNumber());
-        assertTrue(invoice.getTransactions().isEmpty());
+        assertThat(invoice, is(notNullValue()));
+        assertThat(invoice.getInvoiceNumber(), is("00004"));
+        assertThat(invoice.getTransactions(), is(empty()));
     }
 
     @Test
@@ -193,6 +195,6 @@ public class InvoiceGeneratorTest {
 
         Invoice invoice = invoiceGenerator.generateInvoice(invoiceDto);
 
-        assertEquals(0, new BigDecimal("220.00").compareTo(invoice.getGrossAmount()));
+        assertThat(invoice.getGrossAmount(), comparesEqualTo(new BigDecimal("220.00")));
     }
 }

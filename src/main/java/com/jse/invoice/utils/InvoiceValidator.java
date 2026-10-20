@@ -1,6 +1,7 @@
 package com.jse.invoice.utils;
 
 import java.util.Optional;
+import java.util.StringJoiner;
 
 import org.springframework.stereotype.Component;
 
@@ -16,25 +17,25 @@ public class InvoiceValidator {
     }
 
     public Optional<String> verifyInvoice(InvoiceDto invoiceDto) {
-        StringBuilder reasons = new StringBuilder();
+        StringJoiner reasons = new StringJoiner("; ");
 
         if (invoiceValidatorConditions.verifyInvoiceTransactionListSize(invoiceDto)){
-            reasons.append("List of transactions does not match the number of transactions in the invoice");
+            reasons.add("List of transactions does not match the number of transactions in the invoice");
         }
 
         if (invoiceValidatorConditions.verifyInvoiceNetAmount(invoiceDto)){
-            reasons.append("Net ammount does not match");
+            reasons.add("Net ammount does not match");
         }
 
         if (invoiceValidatorConditions.verifyInvoiceGstAmount(invoiceDto)){
-            reasons.append("GST ammount does not match");
+            reasons.add("GST ammount does not match");
         }
 
         if (invoiceValidatorConditions.verifyTotalAmountInvoice(invoiceDto)){
-            reasons.append("Invoice Gross ammount does not match");
+            reasons.add("Invoice Gross ammount does not match");
         }
 
-        if (reasons.isEmpty()){
+        if (reasons.length() == 0){
             return Optional.empty();
         } else {
             return Optional.of(reasons.toString());
